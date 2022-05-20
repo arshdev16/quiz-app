@@ -1,7 +1,15 @@
-import '../styles/globals.css'
+import React from "react";
+import Navbar from "../components/Navbar";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  const [loading, setLoading] = React.useState(true);
+  return (
+    <>
+      {!loading && <Navbar />}
+      <Component {...pageProps} setLoading={setLoading}/>
+    </>
+  );
 }
 
-export default MyApp
+export default MyApp;
