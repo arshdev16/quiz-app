@@ -27,7 +27,7 @@ const signup = ({ setLoading, loading }) => {
           <Loading />
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-start my-10 p-5 w-screen h-screen">
+        <div className="flex flex-col items-center justify-start m-10 p-5 w-screen h-screen">
           <h1 className="text-3xl">Signup</h1>
           <Formik
             validationSchema={formSchema}
@@ -51,7 +51,7 @@ const signup = ({ setLoading, loading }) => {
                 toast.success("Successfully signed up!");
               } catch (e) {
                 console.error(e);
-                alert("Some error occured");
+                toast.error("Some error occured");
               }
             }}
           >
@@ -92,7 +92,7 @@ const signup = ({ setLoading, loading }) => {
 };
 const InputField = (props) => {
   return (
-    <div className="flex flex-col justify-start items-center w-1/2 h-40">
+    <div className="flex flex-col justify-start items-center w-1/2 h-28 m-2">
       <label htmlFor={props.name}>{props.label}</label>
       <Field
         type={props.type}

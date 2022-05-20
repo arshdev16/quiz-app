@@ -7,6 +7,10 @@
 body {
   background-color: #131313;
   color: white;
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: 'Oswald', sans-serif;
+}
+::-webkit-scrollbar{
+  width: 0px;
+  background: transparent;
 }

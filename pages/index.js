@@ -11,7 +11,7 @@ export default function Home({ setLoading }) {
   console.log(user)
   return (
     <div className="flex w-screen h-screen overflow-hidden">
-      {loading ? <Loading /> : <div></div>}
+      
     </div>
   );
 }
