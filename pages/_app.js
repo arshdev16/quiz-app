@@ -7,7 +7,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       {!loading && <Navbar />}
-      <Component {...pageProps} setLoading={setLoading}/>
+      <Component {...pageProps} setLoading={setLoading} loading={loading}/>
     </>
   );
 }
