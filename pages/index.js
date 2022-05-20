@@ -8,6 +8,7 @@ export default function Home({ setLoading }) {
   useEffect(() => {
     setLoading(loading);
   }, [loading]);
+  console.log(user)
   return (
     <div className="flex w-screen h-screen overflow-hidden">
       {loading ? <Loading /> : <div></div>}

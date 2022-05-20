@@ -1,6 +1,6 @@
 import React from "react";
 import { auth } from "../lib/firebase";
-import { LinkBtn, AuthBtns } from "./Buttons";
+import { LinkBtn, AuthBtns, LogoutBtn} from "./Buttons";
 
 const Navbar = () => {
   return (
@@ -17,10 +17,15 @@ const Navbar = () => {
           <LinkBtn>Your Quizes</LinkBtn>
         </li>
       </ul>
-      {!auth.currentUser && (
+      {!auth.currentUser ? (
         <div>
           <AuthBtns pathname="/login">Login</AuthBtns>
           <AuthBtns pathname="/signup">Sign up</AuthBtns>
+        </div>
+      ) : (
+        <div>
+          <AuthBtns pathname="/">Quiz History</AuthBtns>
+          <LogoutBtn pathname="/">Logout</LogoutBtn>
         </div>
       )}
     </div>

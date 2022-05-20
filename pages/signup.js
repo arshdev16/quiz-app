@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { firestore, auth } from "../lib/firebase";
 import Loading from "../components/Loading";
+import toast from "react-hot-toast";
 
 const signup = ({ setLoading, loading }) => {
   useEffect(() => {
@@ -22,7 +23,9 @@ const signup = ({ setLoading, loading }) => {
   return (
     <>
       {loading ? (
-        <Loading />
+        <div className="flex flex-col w-screen h-screen items-center justify-center">
+          <Loading />
+        </div>
       ) : (
         <div className="flex flex-col items-center justify-start my-10 p-5 w-screen h-screen">
           <h1 className="text-3xl">Signup</h1>
@@ -45,6 +48,7 @@ const signup = ({ setLoading, loading }) => {
                     email: values.email,
                   });
                 setLoading(false);
+                toast.success("Successfully signed up!");
               } catch (e) {
                 console.error(e);
                 alert("Some error occured");
@@ -53,55 +57,28 @@ const signup = ({ setLoading, loading }) => {
           >
             {({ isSubmitting }) => (
               <Form className="m-5 flex flex-col justify-center items-center w-full">
-                <div className="flex flex-col justify-start items-center w-1/2 h-40">
-                  <label htmlFor="username">Username</label>
-                  <Field
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    className="text-black w-full
-              m-3 h-10 p-4 rounded-xl focus: border-3 border-white outline-none hover:border-sky-400"
-                  />
-                  <ErrorMessage
-                    name="username"
-                    component="div"
-                    className="text-red-500"
-                  />
-                </div>
-                <div className="flex flex-col justify-start items-center h-40 w-1/2">
-                  <label htmlFor="email">Email</label>
-                  <Field
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    className=" text-black w-full
-              m-3 h-10 p-4 rounded-xl focus: border-3 border-white outline-none focus:border-sky-400"
-                  />
-                  <ErrorMessage
-                    name="email"
-                    component="div"
-                    className="text-red-500"
-                  />
-                </div>
-                <div className="flex flex-col justify-start items-center w-1/2 h-40">
-                  <label htmlFor="password">Password</label>
-                  <Field
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    className=" text-black w-full
-              m-3 h-10 p-4 rounded-xl focus: border-3 border-white outline-none focus:border-sky-400"
-                  />
-                  <ErrorMessage
-                    name="password"
-                    component="div"
-                    className="text-red-500"
-                  />
-                </div>
+                <InputField
+                  name="username"
+                  label="Username"
+                  type="text"
+                  placeholder="Enter Your Name..."
+                />
+                <InputField
+                  name="email"
+                  label="Email"
+                  type="email"
+                  placeholder="Enter Your Email..."
+                />
+                <InputField
+                  name="password"
+                  label="Password"
+                  type="password"
+                  password="Enter Your Password..."
+                />
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl w-1/2"
                 >
                   Submit
                 </button>
@@ -113,5 +90,23 @@ const signup = ({ setLoading, loading }) => {
     </>
   );
 };
-
+const InputField = (props) => {
+  return (
+    <div className="flex flex-col justify-start items-center w-1/2 h-40">
+      <label htmlFor={props.name}>{props.label}</label>
+      <Field
+        type={props.type}
+        name={props.name}
+        placeholder={props.placeholder}
+        className=" text-black w-full
+      m-3 h-10 p-4 rounded-xl focus: border-3 border-white outline-none focus:border-sky-400"
+      />
+      <ErrorMessage
+        name={props.name}
+        component="div"
+        className="text-red-500"
+      />
+    </div>
+  );
+};
 export default signup;
