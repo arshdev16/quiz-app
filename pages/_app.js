@@ -1,18 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 import Navbar from "../components/Navbar";
 import "../styles/globals.css";
 import { Toaster } from "react-hot-toast";
+import { AppContext } from "../lib/Context";
+import { useUserData } from "../lib/Hooks";
+import Loading from "../components/Loading";
 
 function MyApp({ Component, pageProps }) {
-  const [loading, setLoading] = React.useState(true);
- 
- //add conetext api 
+  const AppData = useUserData();
+
   return (
-    <>
-      {!loading && <Navbar />}
-      <Component {...pageProps} setLoading={setLoading} loading={loading} />
-      <Toaster />
-    </>
+    <AppContext.Provider value={AppData}>
+      {AppData.loading ? (
+        <div className="flex w-screen h-screen justify-center items-center">
+          <Loading />
+        </div>
+      ) : (
+        <>
+          <Navbar />
+          <Component {...pageProps} />
+          <Toaster />
+        </>
+      )}
+    </AppContext.Provider>
   );
 }
 

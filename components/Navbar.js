@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <div className="flex justify-between p-4 max-h-12">
       <div>EXAMPLE</div>
-      <ul className="flex">
+      <ul className="flex justify-self-center ">
         <li>
           <LinkBtn>Home</LinkBtn>
         </li>
