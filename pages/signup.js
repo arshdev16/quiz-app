@@ -1,14 +1,18 @@
 import React, { useEffect, useContext } from "react";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { firestore, auth } from "../lib/firebase";
+import { firebaseApp } from "../lib/firebase";
 import toast from "react-hot-toast";
 import { AppContext } from "../lib/Context";
 import { useRouter } from "next/router";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 const signup = () => {
   const { setLoading } = useContext(AppContext);
   const router = useRouter();
+  const auth = getAuth(firebaseApp);
+  const firestore = getFirestore(firebaseApp);
 
   useEffect(() => {
     setLoading(false);
@@ -49,18 +53,17 @@ const signup = () => {
           onSubmit={async (values) => {
             try {
               setLoading(true);
-              await auth.createUserWithEmailAndPassword(
+              await createUserWithEmailAndPassword(
+                auth,
                 values.email,
                 values.password
               );
-              await firestore
-                .collection("users")
-                .doc(auth.currentUser.uid)
-                .set({
-                  username: values.username,
-                  email: values.email,
-                  userId: auth.currentUser.uid,
-                });
+              const data = {
+                username: values.username,
+                email: values.email,
+                userId: auth.currentUser.uid,
+              }
+              await setDoc(doc(firestore, "users", auth.currentUser.uid), data);
               setLoading(false);
               toast.success("Successfully signed up!");
               router.push("/");

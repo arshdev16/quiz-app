@@ -1,20 +1,22 @@
 import React from "react";
-import { auth } from "../lib/firebase";
+import { firebaseApp } from "../lib/firebase";
 import { LinkBtn, AuthBtns, LogoutBtn} from "./Buttons";
+import { getAuth } from "firebase/auth";
 
 const Navbar = () => {
+  const auth = getAuth(firebaseApp);
   return (
     <div className="flex justify-between p-4 max-h-12">
       <div>EXAMPLE</div>
-      <ul className="flex justify-self-center ">
+      <ul className="flex">
         <li>
-          <LinkBtn>Home</LinkBtn>
+          <LinkBtn pathname="/">Home</LinkBtn>
         </li>
         <li>
-          <LinkBtn>Quizes</LinkBtn>
+          <LinkBtn pathname="/">Quizes</LinkBtn>
         </li>
         <li>
-          <LinkBtn>Your Quizes</LinkBtn>
+          <LinkBtn pathname="/admin/yourquizes">Your Quizes</LinkBtn>
         </li>
       </ul>
       {!auth.currentUser ? (

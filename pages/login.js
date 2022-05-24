@@ -1,12 +1,14 @@
 import React, { useEffect, useContext } from "react";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { auth } from "../lib/firebase";
+import { firebaseApp } from "../lib/firebase";
 import toast from "react-hot-toast";
 import { AppContext } from "../lib/Context";
 import { useRouter } from "next/router";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const login = () => {
+  const auth = getAuth(firebaseApp);
   const { setLoading } = useContext(AppContext);
   const router = useRouter();
 
@@ -46,7 +48,8 @@ const login = () => {
           onSubmit={async (values) => {
             try {
               setLoading(true);
-              await auth.signInWithEmailAndPassword(
+              await signInWithEmailAndPassword(
+                auth, 
                 values.email,
                 values.password
               );
@@ -79,7 +82,7 @@ const login = () => {
                 name="password"
                 label="Password"
                 type="password"
-                password="Enter Your Password..."
+                placeholder="Enter Your Password..."
               />
               <button
                 type="submit"
