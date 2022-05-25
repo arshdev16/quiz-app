@@ -8,7 +8,6 @@ import {
   serverTimestamp,
   setDoc,
   doc,
-  Firestore,
 } from "firebase/firestore";
 import { firebaseApp } from "../../lib/firebase";
 import { AppContext } from "../../lib/Context";
@@ -38,8 +37,12 @@ const QuizList = () => {
   return (
     <>
       <h1 className="text-2xl font-bold">Your Quizes</h1>
-      <div className="flex flex-wrap w-full h-full justify-self-center">
-        <QuizFeed quizes={quizes} />
+      <div className="flex flex-wrap w-full h-max justify-self-center">
+        {quizes && quizes.length > 0 ? (
+          <QuizFeed quizes={quizes} />
+        ) : (
+          <h1 className="text-2xl font-bold m-4">No Quizes Yet</h1>
+        )}
       </div>
     </>
   );
@@ -107,7 +110,7 @@ const CreateBtn = () => {
   };
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full my-4">
       <form onSubmit={onSubmit}>
         <label htmlFor="title">Quiz title</label>
         <input
