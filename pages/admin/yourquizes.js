@@ -49,7 +49,7 @@ const QuizList = () => {
 };
 
 const CreateBtn = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const slug = encodeURI(kebabCase(title));
   const isValid = title.length > 3 && slug.length > 60;
@@ -69,24 +69,83 @@ const CreateBtn = () => {
         questions: [
           {
             question: "2+2=?",
-            answers: [
-              {
-                answer: "1",
-                correct: false,
-              },
-              {
-                answer: "2",
-                correct: false,
-              },
-              {
-                answer: "3",
-                correct: false,
-              },
-              {
-                answer: "4",
-                correct: true,
-              },
-            ],
+            option1: "1",
+            option2: "2",
+            option3: "3",
+            option4: "4",
+            correctAnswer: "4",
+          },
+          {
+            question: "2+2=?",
+            option1: "1",
+            option2: "2",
+            option3: "3",
+            option4: "4",
+            correctAnswer: "4",
+          },
+          {
+            question: "2+2=?",
+            option1: "1",
+            option2: "2",
+            option3: "3",
+            option4: "4",
+            correctAnswer: "4",
+          },
+          {
+            question: "2+2=?",
+            option1: "1",
+            option2: "2",
+            option3: "3",
+            option4: "4",
+            correctAnswer: "4",
+          },
+          {
+            question: "2+2=?",
+            option1: "1",
+            option2: "2",
+            option3: "3",
+            option4: "4",
+            correctAnswer: "4",
+          },
+          {
+            question: "2+2=?",
+            option1: "1",
+            option2: "2",
+            option3: "3",
+            option4: "4",
+            correctAnswer: "4",
+          },
+          {
+            question: "2+2=?",
+            option1: "1",
+            option2: "2",
+            option3: "3",
+            option4: "4",
+            correctAnswer: "4",
+          },
+          {
+            question: "2+2=?",
+            option1: "1",
+            option2: "2",
+            option3: "3",
+            option4: "4",
+            correctAnswer: "4",
+          },
+          {
+            question: "2+2=?",
+            option1: "1",
+            option2: "2",
+            option3: "3",
+            option4: "4",
+            correctAnswer: "4",
+          },
+          {
+            question: "2+2=?",
+            option1: "1",
+            option2: "2",
+            option3: "3",
+            option4: "4",
+            correctAnswer: "4",
           },
         ],
       };
@@ -98,6 +157,7 @@ const CreateBtn = () => {
         .then(() => {
           setLoading(false);
           toast.success("Successfully created quiz!");
+          router.push(`/admin/${slug}`);
         })
         .catch(() => {
           setLoading(false);
