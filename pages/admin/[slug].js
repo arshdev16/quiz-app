@@ -3,10 +3,11 @@ import AuthCheck from "../../components/AuthCheck";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { firebaseApp } from "../../lib/firebase";
-import { getFirestore, doc, collection } from "firebase/firestore";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import { useRouter } from "next/router";
 import { AppContext } from "../../lib/Context";
+import toast from "react-hot-toast";
 
 const QuizEdit = () => {
   const { userId } = useContext(AppContext);
@@ -33,6 +34,8 @@ const QuizEdit = () => {
 };
 
 const QuizEditor = ({ quiz }) => {
+  const firestore = getFirestore(firebaseApp);
+  const { setLoading } = useContext(AppContext);
   const initialValues = {
     description: quiz.description,
     questions: quiz.questions,
@@ -46,6 +49,7 @@ const QuizEditor = ({ quiz }) => {
           description: Yup.string().required("Description is required"),
           questions: Yup.array().required("Questions are required"),
         })}
+        validateOnMount={true}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
           console.log(values);
@@ -61,19 +65,50 @@ const QuizEditor = ({ quiz }) => {
               defaultValue={quiz.description}
             />
             {quiz.questions.map((question, index) => (
-              <div key={index} className="flex justify-center w-4/5 border-2 border-white m-5 rounded-3xl bg-slate-700">
+              <div
+                key={index}
+                className="flex justify-center w-4/5 border-2 border-white m-5 rounded-3xl bg-slate-700"
+              >
                 <Formik
                   initialValues={{
-                    question: question.question,
-                    option1: question.option1,
-                    option2: question.option2,
-                    option3: question.option3,
-                    option4: question.option4,
-                    correctAnswer: question.correctAnswer,
+                    question: " ",
+                    option1: " ",
+                    option2: " ",
+                    option3: " ",
+                    option4: " ",
+                    correctAnswer: " ",
+                  }}
+                  validationSchema={Yup.object().shape({
+                    question: Yup.string().required("Question is required"),
+                    option1: Yup.string().required("Option 1 is required"),
+                    option2: Yup.string().required("Option 2 is required"),
+                    option3: Yup.string().required("Option 3 is required"),
+                    option4: Yup.string().required("Option 4 is required"),
+                  })}
+                  validateOnMount={true}
+                  onSubmit={(values) => {
+                    try {
+                      console.log(values);
+                      // setLoading(true);
+                      // const newQuestion = {
+                      //   question: values.question,
+                      //   option1: values.option1,
+                      //   option2: values.option2,
+                      //   option3: values.option3,
+                      //   option4: values.option4,
+                      //   correctAnswer: values.correctAnswer,
+                      // };
+
+                      // await setDoc(doc(firestore, `users/${userId}/yourquizes/${slug}`), newQuestion);
+                      // setLoading(false);
+                      // toast.success("Question updated successfully");
+                    } catch (e) {
+                      console.error(e.message);
+                    }
                   }}
                 >
                   {({ isSubmitting }) => (
-                    <Form className="w-full flex flex-col justify-start items-center">
+                    <div className="w-full flex flex-col justify-center items-center">
                       <InputField
                         name={`question`}
                         label={`Question ${index + 1}`}
@@ -81,7 +116,7 @@ const QuizEditor = ({ quiz }) => {
                         type="text"
                         defaultValue={question.question}
                       />
-                      <div className="flex flex-col">
+                      <div className="flex flex-col items-center">
                         <div className="flex">
                           <InputField
                             name={"option1"}
@@ -114,8 +149,19 @@ const QuizEditor = ({ quiz }) => {
                             defaultValue={question.option4}
                           />
                         </div>
+                        <SelectField
+                          name="correctAnswer"
+                          label={`correct answer for question ${index}`}
+                        />
+                        <button
+                          type="submit"
+                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl m-5"
+                          disabled={isSubmitting}
+                        >
+                          Update question
+                        </button>
                       </div>
-                    </Form>
+                    </div>
                   )}
                 </Formik>
               </div>
@@ -130,6 +176,20 @@ const QuizEditor = ({ quiz }) => {
           </Form>
         )}
       </Formik>
+    </div>
+  );
+};
+
+const SelectField = (props) => {
+  return (
+    <div className="flex flex-col justify-start items-center w-1/2 h-28 mx-5 my-5">
+      <label htmlFor={props.name}>{props.label}</label>
+      <Field as="select" name={props.name} className="text-black m-5">
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+        <option value="option4">Option 4</option>
+      </Field>
     </div>
   );
 };

@@ -49,7 +49,7 @@ const login = () => {
             try {
               setLoading(true);
               await signInWithEmailAndPassword(
-                auth, 
+                auth,
                 values.email,
                 values.password
               );
